@@ -158,18 +158,19 @@ function sched(){const t=ac.currentTime+.1,c=CH[bar++%4];c.forEach(s=>note(130.8
 const q=[c[0],c[1],c[2],c[0]+12,c[2],c[1],c[2],c[1]+12];q.forEach((s,i)=>note(261.63*2**(s/12),t+i*.4,1.5,.07,'triangle'))}
 function synth(on){if(on){if(!ac){ac=new(window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=.9;const d=ac.createDelay();d.delayTime.value=.38;const fb=ac.createGain();fb.gain.value=.42;mg.connect(ac.destination);mg.connect(d);d.connect(fb);fb.connect(d);d.connect(ac.destination)}ac.resume();sched();tm=setInterval(sched,3200)}else{clearInterval(tm);ac&&ac.suspend()}
 }
-/* Canción: coloque su archivo MP3 junto a esta página con el nombre musica.mp3 (o cambie el nombre aquí) */
-const au=new Audio('musica.mp3');au.loop=true;au.volume=.8;
-function music(on){playing=on;$('#mus').textContent=on?'🎵':'🔇';if(on){au.play().catch(()=>{if(playing)synth(true)})}else{au.pause();synth(false)}}
+const au=new Audio('hola.mp3');au.volume=.8;au.preload='auto';const INICIO=74; /* minuto 1:14 */
+au.addEventListener('loadedmetadata',()=>{au.currentTime=INICIO});
+au.addEventListener('ended',()=>{au.currentTime=INICIO;au.play()});
+function music(on){playing=on;$('#mus').textContent=on?'🎵':'🔇';if(on){if(au.readyState&&au.currentTime<INICIO)au.currentTime=INICIO;au.play().catch(()=>{if(playing)synth(true)})}else{au.pause();synth(false)}}
 $('#mus').onclick=()=>music(!playing);
 /* Flujo */
 let opened=false;
 async function openEnv(){if(opened)return;opened=true;try{music(true)}catch(e){}
 $('#env').classList.add('open');await wait(2600);show('#s2');await wait(900);
-await type($('#t1'),'Mi querido Davi... ❤️\n\nHay momentos que se vuelven inolvidables cuando se comparten con una persona especial, y yo quisiera crear uno más a su lado.\n\nPor eso quiero invitarlo a algo muy bonito...');$('#b1').classList.add('show')}
+await type($('#t1'),'Mi querida Davi... ❤️\n\nHay momentos que se vuelven inolvidables cuando se comparten con una persona especial, y yo quisiera crear uno más a su lado.\n\nPor eso quiero invitarla a algo muy bonito...');$('#b1').classList.add('show')}
 $('#env').onclick=openEnv;$('#env').onkeydown=e=>{if(e.key=='Enter'||e.key==' ')openEnv()};
 $('#b1').onclick=async()=>{show('#s3');await wait(1200);
-await type($('#h3'),'¿ME CONCEDE EL HONOR DE INVITARLO A UN PICNIC ROMÁNTICO? 🌷',50);
+await type($('#h3'),'¿ME CONCEDE EL HONOR DE INVITARLA A UN PICNIC ROMÁNTICO? 🌷',50);
 await type($('#t3'),'Quiero compartir con usted una tarde llena de sonrisas, conversaciones bonitas, abrazos, comida deliciosa y momentos que podamos guardar para siempre en nuestro corazón.',34);$('#b3').classList.add('show')};
 $('#b3').onclick=async()=>{show('#s4');await wait(1000);
 await type($('#t4'),'Mi Davi, no necesito un lugar perfecto ni un plan extraordinario. Para mí, lo más bonito sería tenerlo a usted a mi lado, disfrutar de su compañía y convertir una tarde sencilla en un recuerdo maravilloso.\n\nPorque si es con usted, cualquier lugar se convierte en mi lugar favorito.\n\n¿Acepta esta invitación? ❤️',32);
